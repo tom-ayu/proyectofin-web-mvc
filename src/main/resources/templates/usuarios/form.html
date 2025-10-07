@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Usuario</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 40px; }
+        form { background: #fff; padding: 20px; border-radius: 8px; width: 300px; }
+        input, select { width: 100%; padding: 8px; margin: 8px 0; }
+        button { width: 100%; padding: 8px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+<h2 th:text="${usuario.id} == null ? 'Nuevo Usuario' : 'Editar Usuario'"></h2>
+<form th:action="@{/usuarios}" th:object="${usuario}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <label>Usuario:</label>
+    <input type="text" th:field="*{username}" placeholder="Usuario" required />
+    <label>Contraseña:</label>
+    <input type="password" th:field="*{password}" placeholder="Contraseña" required />
+    <label>Rol:</label>
+    <select th:field="*{rol}">
+        <option value="ADMIN">ADMIN</option>
+        <option value="USER">USER</option>
+    </select>
+    <label>Activo:</label>
+    <select th:field="*{enabled}">
+        <option th:value="true">Sí</option>
+        <option th:value="false">No</option>
+    </select>
+    <button type="submit">Guardar</button>
+</form>
+<a th:href="@{/usuarios}">Volver a la lista</a>
+</body>
+</html>

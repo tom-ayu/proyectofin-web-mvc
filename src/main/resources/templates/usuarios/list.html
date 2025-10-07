@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Usuarios</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f2f2f2; }
+        table { width: 100%; border-collapse: collapse; background: #fff; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+        a { text-decoration: none; color: white; padding: 5px 10px; border-radius: 5px; }
+        .btn { background-color: #4CAF50; }
+        .btn-delete { background-color: #f44336; }
+        .btn-new { background-color: #007BFF; }
+        .btn-container { width: 100%; margin: 10px 0; text-align: right; }
+    </style>
+</head>
+<body>
+
+<h2>Lista de Usuarios</h2>
+
+<div class="btn-container">
+    <a th:href="@{/usuarios/nuevo}" class="btn btn-new">Nuevo Usuario</a>
+</div>
+
+<table>
+    <tr>
+        <th>ID</th><th>Usuario</th><th>Rol</th><th>Activo</th><th>Acciones</th>
+    </tr>
+    <tr th:each="u : ${usuarios}">
+        <td th:text="${u.id}"></td>
+        <td th:text="${u.username}"></td>
+        <td th:text="${u.rol}"></td>
+        <td th:text="${u.enabled}"></td>
+        <td>
+            <a th:href="@{'/usuarios/editar/' + ${u.id}}" class="btn">Editar</a>
+            <a th:href="@{'/usuarios/eliminar/' + ${u.id}}" class="btn btn-delete">Eliminar</a>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
