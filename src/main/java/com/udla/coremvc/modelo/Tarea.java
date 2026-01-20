@@ -2,6 +2,7 @@ package com.udla.coremvc.modelo;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tareas")
@@ -39,11 +40,13 @@ public class Tarea {
     @Column(name = "veces_reabierta")
     private Integer vecesReabierta = 0;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "proyecto_id", nullable = false)
     @NotNull(message = "Debe seleccionar un proyecto")
     private Proyecto proyecto;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "recurso_id", nullable = false)
     @NotNull(message = "Debe seleccionar un recurso")
