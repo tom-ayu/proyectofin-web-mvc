@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class ProyectofinWebMvcApplication {
+
 	public static void main(String[] args) {
 		SpringApplication.run(ProyectofinWebMvcApplication.class, args);
 	}
