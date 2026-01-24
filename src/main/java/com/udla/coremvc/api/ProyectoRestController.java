@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.udla.coremvc.modelo.ReporteProyecto;
 import com.udla.coremvc.servicio.GeneradorReportes;
+import com.udla.coremvc.servicio.analisis.AnalizadorRiesgos;
 
 import java.util.List;
 
@@ -16,16 +17,49 @@ public class ProyectoRestController {
 
     private final IProyectoService proyectoService;
     private final GeneradorReportes generadorReportes;
+    private final AnalizadorRiesgos analizadorRiesgos;
 
     public ProyectoRestController(IProyectoService proyectoService,
-                                  GeneradorReportes generadorReportes) {
+                                  GeneradorReportes generadorReportes,
+                                  AnalizadorRiesgos analizadorRiesgos) {
         this.proyectoService = proyectoService;
         this.generadorReportes = generadorReportes;
+        this.analizadorRiesgos = analizadorRiesgos;
     }
 
     @GetMapping
-    public ResponseEntity<List<Proyecto>> listarProyectos() {
+    public ResponseEntity<List<Proyecto>> listarProyectos(
+            @RequestParam(required = false) String riesgo,
+            @RequestParam(required = false) Double presupuestoMin,
+            @RequestParam(required = false) Double presupuestoMax) {
+
         List<Proyecto> proyectos = proyectoService.listarProyectos();
+
+        // Filtrar por riesgo
+        if (riesgo != null) {
+            proyectos = proyectos.stream()
+                    .filter(p -> {
+                        boolean enRiesgo = analizadorRiesgos.analizarRiesgo(p);
+                        return (riesgo.equalsIgnoreCase("SI") && enRiesgo) ||
+                                (riesgo.equalsIgnoreCase("NO") && !enRiesgo);
+                    })
+                    .toList();
+        }
+
+        // Filtrar por presupuesto mínimo
+        if (presupuestoMin != null) {
+            proyectos = proyectos.stream()
+                    .filter(p -> p.getPresupuestoTotal() >= presupuestoMin)
+                    .toList();
+        }
+
+        // Filtrar por presupuesto máximo
+        if (presupuestoMax != null) {
+            proyectos = proyectos.stream()
+                    .filter(p -> p.getPresupuestoTotal() <= presupuestoMax)
+                    .toList();
+        }
+
         return ResponseEntity.ok(proyectos);
     }
 
