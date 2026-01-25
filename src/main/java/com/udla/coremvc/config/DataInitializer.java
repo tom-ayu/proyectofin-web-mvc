@@ -65,7 +65,7 @@ public class DataInitializer {
     }
 
     private void initRecursos() {
-        if (recursoRepository.count() == 0) {
+        if (recursoRepository.findAll().isEmpty()) {
             Recurso r1 = new Recurso();
             r1.setNombre("Juan Pérez");
             r1.setRol("Desarrollador Sr.");
@@ -90,7 +90,7 @@ public class DataInitializer {
     }
 
     private void initProyectos() {
-        if (proyectoRepository.count() == 0) {
+        if (proyectoRepository.findAll().isEmpty()) {
             Proyecto p1 = new Proyecto();
             p1.setNombre("Sistema de Ventas");
             p1.setPresupuestoTotal(50000.0);
@@ -109,7 +109,7 @@ public class DataInitializer {
     }
 
     private void initTareas() {
-        if (tareaRepository.count() == 0) {
+        if (tareaRepository.findAll().isEmpty()) {
             Proyecto proyecto = proyectoRepository.findById(1L).orElse(null);
             Recurso recurso1 = recursoRepository.findById(1L).orElse(null);
             Recurso recurso2 = recursoRepository.findById(2L).orElse(null);
